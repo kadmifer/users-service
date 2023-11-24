@@ -1,10 +1,13 @@
 create table cities
 (
     id      serial,
-    title   varchar(255)           not null,
-    deleted bit default '0'::"bit" not null,
+    title   varchar(255)          not null,
+    deleted boolean default false not null,
     primary key (id)
 );
+
+create index cities_deleted_index
+    on cities (deleted);
 
 create table users
 (
@@ -20,7 +23,7 @@ create table users
     city_id    bigint                 not null,
     avatar     varchar(255)           not null,
     about      varchar(512),
-    deleted    bit default '0'::"bit" not null,
+    deleted boolean default false not null,
     primary key (id),
     constraint users_city_id_fk
         foreign key (city_id) references cities
@@ -38,14 +41,20 @@ create index users_city_id_gender_index
 create index users_city_id_index
     on users using hash (city_id);
 
+create index users_deleted_index
+    on users (deleted);
+
 create table skills
 (
     id      serial,
     title   varchar(255)           not null,
-    deleted bit default '0'::"bit" not null,
+    deleted boolean default false not null,
     constraint skills_pk
         primary key (id)
 );
+
+create index skills_deleted_index
+    on skills (deleted);
 
 create table user_skills
 (
@@ -79,3 +88,4 @@ create unique index followers_follower_id_user_id_uindex
 alter table followers
     add constraint followers_not_equal_id
         check (user_id <> follower_id);
+
