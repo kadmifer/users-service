@@ -2,6 +2,7 @@ package com.skillbox.users_service.controller;
 
 import com.skillbox.users_service.entity.Follower;
 import com.skillbox.users_service.entity.User;
+import com.skillbox.users_service.entity.UserSkill;
 import com.skillbox.users_service.service.FollowerService;
 import com.skillbox.users_service.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -82,5 +83,43 @@ public class UserController {
         }
 
         return followerService.getUsers(id);
+    }
+
+    @GetMapping(path = "/{id}/skills")
+    List<UserSkill> getUserSkills(@PathVariable long id){
+        Optional<User> user = userService.getUser(id);
+
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return userService.getUserSkills(id);
+    }
+
+    @PostMapping(path = "/{id}/skills")
+    UserSkill addSkill(@PathVariable long id, @RequestBody UserSkill userSkill) {
+        Optional<User> user = userService.getUser(id);
+
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return userService.addSkill(userSkill);
+    }
+
+    @DeleteMapping(path = "/{id}/skills/{userSkillId}")
+    void deleteSkill(@PathVariable long id, @PathVariable long userSkillId) {
+        Optional<User> user = userService.getUser(id);
+        Optional<UserSkill> userSkill = userService.getUserSkill(userSkillId);
+
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (userSkill.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        userService.deleteUserSkill(userSkillId);
     }
 }
