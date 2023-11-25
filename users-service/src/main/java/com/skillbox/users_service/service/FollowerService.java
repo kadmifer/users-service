@@ -28,7 +28,7 @@ public class FollowerService {
         return followerRepository.save(follower);
     }
 
-    public void deleteCity(long id) {
+    public void deleteFollower(long id) {
         if (!followerRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

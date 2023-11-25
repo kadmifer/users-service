@@ -1,6 +1,8 @@
 package com.skillbox.users_service.controller;
 
+import com.skillbox.users_service.entity.Follower;
 import com.skillbox.users_service.entity.User;
+import com.skillbox.users_service.service.FollowerService;
 import com.skillbox.users_service.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +23,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final FollowerService followerService;
+
+    public UserController(UserService userService, FollowerService followerService) {
+
         this.userService = userService;
+        this.followerService = followerService;
     }
 
     @GetMapping
@@ -54,5 +60,27 @@ public class UserController {
     @DeleteMapping(path = "/{id}")
     void deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
+    }
+
+    @GetMapping(path = "/{id}/followers")
+    List<Follower> getFollowers(@PathVariable long id) {
+        Optional<User> user = userService.getUser(id);
+
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return followerService.getFollowers(id);
+    }
+
+    @GetMapping(path = "/{id}/subscriptions")
+    List<Follower> get(@PathVariable long id) {
+        Optional<User> user = userService.getUser(id);
+
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return followerService.getUsers(id);
     }
 }

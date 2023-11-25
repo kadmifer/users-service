@@ -16,4 +16,24 @@ public class Follower {
 
     @Column(name = "user_id")
     private Long userId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getFollowerId() {
+        return followerId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setFollowerId(Long followerId) {
+        this.followerId = followerId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }
