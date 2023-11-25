@@ -5,7 +5,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -36,7 +35,7 @@ public class User {
     @Column(name = "sur_name")
     private String surName;
 
-    @Column(name = "gentder")
+    @Column(name = "gender")
     private String gender;
 
     @Column(name = "birthday")
