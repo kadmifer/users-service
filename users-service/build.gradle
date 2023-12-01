@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'nebula.integtest' version '9.6.3'
 }
 
 group = 'com.skillbox'
@@ -15,15 +16,29 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('testcontainersVersion', "1.18.0")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 	runtimeOnly 'org.postgresql:postgresql'
+
+	//Unit
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+
+	//Integration
+	integTestImplementation 'org.testcontainers:postgresql'
 }
 
 tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.named('integrationTest') {
 	useJUnitPlatform()
 }
